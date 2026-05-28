@@ -1,0 +1,9 @@
+.venv/
+venv/
+__pycache__/
+app/__pycache__/
+app/agent/__pycache__/
+*.pyc
+.env
+models/fraud_model.pkl
+training/*.csv
