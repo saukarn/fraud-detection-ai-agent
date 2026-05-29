@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud-api-deployment
+  labels:
+    app: fraud-api
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: fraud-api
+
+  template:
+    metadata:
+      labels:
+        app: fraud-api
+
+    spec:
+      containers:
+        - name: fraud-api
+          image: fraud-api:1.0
+          imagePullPolicy: Never
+
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-secret
+                  key: OPENAI_API_KEY
+
+          ports:
+            - containerPort: 8000
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20

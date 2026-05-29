@@ -7,3 +7,4 @@ app/agent/__pycache__/
 .env
 models/fraud_model.pkl
 training/*.csv
+k8s/secrets.yaml
